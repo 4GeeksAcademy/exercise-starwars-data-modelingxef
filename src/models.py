@@ -15,9 +15,18 @@ class Usuario(Base):
     password = Column(String(50), nullable=False)
     fecha_de_subscripcion = Column(DateTime, nullable=False)
     email = Column(String(100), nullable=False)
-    favoritos = Column(Integer)
 
-
+class Favoritos(Base):
+    __tablename__ = 'favoritos'
+    id = Column(Integer, primary_key=True)
+    usuario_id = Column(Integer, ForeignKey('usuarios.id'))
+    usuario = relationship(Usuario)
+    planeta_id = Column(Integer, ForeignKey('planetas.id_planeta'))
+    planeta = relationship("Planetas")
+    vehiculo_id = Column(Integer, ForeignKey('vehiculos.id_vehiculos'))
+    vehiculo = relationship("Vehiculos")
+    nombre_id = Column(Integer, ForeignKey('personas.id_persona'))
+    nombre = relationship("Nombres")
 
 class Planetas(Base):
     __tablename__ = 'planetas'  
@@ -27,8 +36,6 @@ class Planetas(Base):
     diametro = Column(Float, nullable=False)
     clima = Column(String(50), nullable=False)
     terreno = Column(String(50), nullable=False)
-    usuario_id = Column(Integer, ForeignKey('usuarios.id'))
-    usuario = relationship(Usuario)
 
 class Nombres(Base):
     __tablename__ = 'personas'
@@ -39,26 +46,20 @@ class Nombres(Base):
     color_de_pelo = Column(String(20))
     genero = Column(String(20))
     birth_year = Column(Integer, nullable=False)
-    usuario_id = Column(Integer, ForeignKey('usuarios.id'))
-    usuario = relationship(Usuario)
 
 class Vehiculos(Base):
      __tablename__ = 'vehiculos'
      id_vehiculos = Column(Integer, primary_key=True)
      nombre_vehiculos = Column(String(100), nullable=False)
      modelo = Column(String(50), nullable=False)
-     longitud = Column(Float, nullable=False)
-     
+     longitud = Column(Float, nullable=False)     
      tripulacion = Column(Integer, nullable=False)
      clase_de_vehiculo =Column(String, nullable=False)
      capacidad_de_carga =Column(Integer, nullable=False)
      velocidad_maxima =Column(Integer, nullable=False)
-     usuario_id = Column(Integer, ForeignKey('usuarios.id'))
-     usuario = relationship(Usuario)
 
 def to_dict(self):
     return {}
 
 ## Draw from SQLAlchemy base
 render_er(Base, 'diagram.png')
-
